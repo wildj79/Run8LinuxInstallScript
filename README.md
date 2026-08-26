@@ -6,7 +6,7 @@ An idempotent Bash script to automate the installation of **Run 8 V3** (a train 
 
 - **Idempotent installation**: Run the script multiple times safely—it tracks completed installations and skips them
 - **DLC management**: Automatically detects and installs any new DLC added to the installer directory
-- **Automatic DLC migration**: Recompiles the game and runs the updater when new DLC is detected
+- **Automatic DLC migration**: Reruns the game installer and runs the updater when new DLC is detected
 - **Interactive confirmation**: Prompts you to confirm installer success (useful since Wine exit codes can be unreliable)
 - **Comprehensive logging**: All installation steps are logged to a file for debugging
 - **Status reporting**: View installation status at any time without making changes
@@ -23,7 +23,8 @@ An idempotent Bash script to automate the installation of **Run 8 V3** (a train 
 ## Installation
 
 1. Clone or download this repository to your local machine
-2. Place your Run 8 V3 installer (`run8v3_install.exe`) and any DLC installer files in the same directory as `install-run8.sh`
+2. Place your Run 8 V3 installer (`run8v3_install.exe`), Run 8 update installer (`r8v3_run8updaterinstaller.exe`) and 
+   any DLC installer files in the same directory as `install-run8.sh`
 3. Make the script executable:
    ```bash
    chmod +x install-run8.sh
