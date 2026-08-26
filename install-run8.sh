@@ -361,7 +361,7 @@ run_updater() {
 
     printf '\n[%s] Running Run8_Updater.exe\n' \
         "$(date --iso-8601=seconds)" >> "$LOG_FILE"
-    
+
     run_external_process wine "$updater_exe"
 
     local status=$?
@@ -517,7 +517,7 @@ case "$COMMAND" in
 Run 8 V3 Wine installer
 
 Usage:
-    $0 [--verbose] Install Run 8 and any uninstalled DLC
+  $0 [--verbose]  Install Run 8 and any uninstalled DLC
   $0 --status     Show installation/manifest status
   $0 --dry-run    Show what would be installed
   $0 --update     Run the Run8 updater
