@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Run 8 Studios Official Support Site
+    url: https://run8support.com/
+    about: For issues with Run 8 itself
+  - name: Wine Documentation
+    url: https://wiki.winehq.org/
+    about: For Wine-related questions and troubleshooting
