@@ -74,6 +74,8 @@ jobs:
             run8-installer-${{ steps.version.outputs.version }}.tar.gz,
             run8-installer-${{ steps.version.outputs.version }}.zip,
             install-run8.sh
-          draft: false
+          draft: true
+          allowUpdates: true
+          makeLatest: true
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
