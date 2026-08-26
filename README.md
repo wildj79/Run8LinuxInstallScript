@@ -20,14 +20,51 @@ An idempotent Bash script to automate the installation of **Run 8 V3** (a train 
 - Write permissions to the installation directory (default: `$HOME/Games/Run8`)
 - A Windows installation (`.exe`) of Run 8 V3 and any desired DLC installers
 
-## Installation
+## Quick Start
 
-1. Clone or download this repository to your local machine
-2. Place your Run 8 V3 installer (`run8v3_install.exe`), Run 8 update installer (`r8v3_run8updaterinstaller.exe`) and 
+> **Note**: Replace `yourusername` in the URLs below with the actual GitHub username where this repository is hosted.
+
+Choose one of the following methods to get started:
+
+### Option 1: Download Latest Release (Recommended)
+
+Download the latest release from [GitHub Releases](../../releases):
+
+```bash
+# Download and extract (replace yourusername with the actual GitHub username)
+wget https://github.com/yourusername/Run8Installer/releases/download/v1.0.0/run8-installer-v1.0.0.tar.gz
+tar -xzf run8-installer-v1.0.0.tar.gz
+cd Run8Installer
+
+# Make script executable
+chmod +x install-run8.sh
+```
+
+### Option 2: Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/Run8Installer.git
+cd Run8Installer
+chmod +x install-run8.sh
+```
+
+### Option 3: Direct Download
+
+```bash
+# Download just the script
+curl -fsSL https://github.com/yourusername/Run8Installer/releases/download/v1.0.0/install-run8.sh -o install-run8.sh
+chmod +x install-run8.sh
+```
+
+## Installation Setup
+
+After downloading the script via one of the methods above:
+
+1. Place your Run 8 V3 installer (`run8v3_install.exe`), Run 8 update installer (`r8v3_run8updaterinstaller.exe`), and 
    any DLC installer files in the same directory as `install-run8.sh`
-3. Make the script executable:
+2. Run the installer:
    ```bash
-   chmod +x install-run8.sh
+   ./install-run8.sh
    ```
 
 ## Usage
@@ -169,6 +206,33 @@ Run8Installer/
 ```
 
 Place Run 8 installer files (`.exe`) in the same directory as `install-run8.sh`.
+
+## Contributing
+
+Contributions are welcome! Whether it's bug reports, feature requests, or code contributions, please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+### Quick Start for Contributors
+
+1. Fork and clone the repository
+2. Make your changes on a feature branch
+3. Test thoroughly with `./install-run8.sh --dry-run`
+4. Submit a pull request using the PR template
+
+### Releasing
+
+Releases are created by maintainers and automated via GitHub Actions. When a version tag is pushed to the repository:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+GitHub Actions automatically:
+- Creates a GitHub Release
+- Packages archives (`.tar.gz`, `.zip`)
+- Uploads all release assets
+
+See [CONTRIBUTING.md](CONTRIBUTING.md#creating-releases) for the full maintainer release workflow.
 
 ## License
 

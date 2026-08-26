@@ -1,0 +1,79 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create release archives
+        run: |
+          # Create tar.gz archive
+          tar -czf run8-installer-${{ steps.version.outputs.version }}.tar.gz \
+            install-run8.sh README.md CONTRIBUTING.md LICENSE .github/
+          
+          # Create zip archive
+          zip -r run8-installer-${{ steps.version.outputs.version }}.zip \
+            install-run8.sh README.md CONTRIBUTING.md LICENSE .github/ -x "*.git*"
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          # Extract commit messages since last tag for release notes
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          
+          if [ -z "$PREV_TAG" ]; then
+            COMMITS=$(git log --oneline --format="%h %s")
+          else
+            COMMITS=$(git log $PREV_TAG..HEAD --oneline --format="%h %s")
+          fi
+          
+          {
+            echo "## What's Changed"
+            echo ""
+            if [ -n "$COMMITS" ]; then
+              echo "$COMMITS"
+            else
+              echo "Initial release"
+            fi
+            echo ""
+            echo "## Installation"
+            echo ""
+            echo "Download one of the archives and extract it:"
+            echo ""
+            echo "\`\`\`bash"
+            echo "tar -xzf run8-installer-${{ steps.version.outputs.version }}.tar.gz"
+            echo "cd Run8Installer"
+            echo "chmod +x install-run8.sh"
+            echo "./install-run8.sh --help"
+            echo "\`\`\`"
+            echo ""
+            echo "See [README.md](README.md) for full documentation."
+          } > release_notes.md
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.version.outputs.version }}
+          name: Release ${{ steps.version.outputs.version }}
+          bodyFile: release_notes.md
+          artifacts: >-
+            run8-installer-${{ steps.version.outputs.version }}.tar.gz,
+            run8-installer-${{ steps.version.outputs.version }}.zip,
+            install-run8.sh
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
