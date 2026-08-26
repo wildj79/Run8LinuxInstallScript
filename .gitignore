@@ -1,0 +1,22 @@
+# Logs and Output
+*.log
+logs/
+output/
+tmp/
+temp/
+
+# Temporary and Backup Files
+*.bak
+*.swp
+*.swo
+*~
+*.tmp
+*.temp
+
+# OS Specific Files
+.DS_Store
+Thumbs.db
+
+# Environment and Secrets (if applicable)
+.env
+*.secret

@@ -1,0 +1,15 @@
+root = true
+
+# Standard rule for shell scripts with extensions
+[*.{sh,bash,zsh}]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Extended rule for extensionless scripts (Supported by shfmt and some IDEs)
+[[shell]]
+indent_style = space
+indent_size = 4
