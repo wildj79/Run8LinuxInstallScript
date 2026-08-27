@@ -11,6 +11,7 @@
 #   ./install-run8.sh
 #   ./install-run8.sh --status
 #   ./install-run8.sh --dry-run
+#   ./install-run8.sh --verbose
 #
 
 set -u
@@ -36,6 +37,8 @@ UPDATER_INSTALLER="r8v3_run8updaterinstaller.exe"
 
 RUN8_EXE="$RUN8_DIR/Run-8 Train Simulator V3.exe"
 V2_SHIM="$RUN8_DIR/Run-8 Train Simulator V2.exe"
+
+VERBOSE=0
 
 # ---------------------------------------------------------------------------
 # Output helpers
@@ -90,8 +93,7 @@ EOF
 manifest_contains() {
     local installer="$1"
 
-    # Ignore comments and blank lines.
-    grep -Fqx -- "$installer" "$MANIFEST" 2>/dev/null
+    grep -Fq -- "$installer"$'\t' "$MANIFEST" 2>/dev/null
 }
 
 manifest_add() {
@@ -120,12 +122,9 @@ run_windows_installer() {
         "$(date --iso-8601=seconds)" \
         "$installer" >> "$LOG_FILE"
 
-    (
-        export WINEPREFIX
-        wine "$installer_path"
-    ) 2>&1 | tee -a "$LOG_FILE"
+    run_external_process wine "$installer_path"
 
-    local status=${PIPESTATUS[0]}
+    local status=$?
 
     if [[ $status -ne 0 ]]; then
         error "$installer exited with status $status."
@@ -134,6 +133,15 @@ run_windows_installer() {
 
     success "$installer completed."
     return 0
+}
+
+run_external_process() {
+    if [[ "$VERBOSE" -eq 1 ]]; then
+        WINEPREFIX="$WINEPREFIX" "$@" 2>&1 | tee -a "$LOG_FILE"
+        return "${PIPESTATUS[0]}"
+    fi
+
+    WINEPREFIX="$WINEPREFIX" "$@" >/dev/null 2>&1
 }
 
 confirm_installer_success() {
@@ -352,13 +360,10 @@ run_updater() {
 
     printf '\n[%s] Running Run8_Updater.exe\n' \
         "$(date --iso-8601=seconds)" >> "$LOG_FILE"
-    
-    (
-        export WINEPREFIX
-        wine "$updater_exe"
-    ) 2>&1 | tee -a "$LOG_FILE"
 
-    local status=${PIPESTATUS[0]}
+    run_external_process wine "$updater_exe"
+
+    local status=$?
 
     if [[ $status -ne 0 ]]; then
         die "Run 8 updater failed with status $status."
@@ -470,7 +475,26 @@ show_dry_run() {
 # Main
 # ---------------------------------------------------------------------------
 
-case "${1:-}" in
+COMMAND=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --verbose|-v)
+            VERBOSE=1
+            ;;
+        --status|--dry-run|--update|--help|-h)
+            [[ -z "$COMMAND" ]] || die "Only one command option may be used."
+            COMMAND="$1"
+            ;;
+        *)
+            die "Unknown option: $1 (try --help)"
+            ;;
+    esac
+
+    shift
+done
+
+case "$COMMAND" in
     --status)
         check_dependencies
         show_status
@@ -492,11 +516,14 @@ case "${1:-}" in
 Run 8 V3 Wine installer
 
 Usage:
-  $0              Install Run 8 and any uninstalled DLC
+  $0 [--verbose]  Install Run 8 and any uninstalled DLC
   $0 --status     Show installation/manifest status
   $0 --dry-run    Show what would be installed
   $0 --update     Run the Run8 updater
   $0 --help       Show this help
+
+Options:
+    --verbose, -v   Show Wine output and append it to the install log
 
 Environment:
   RUN8_ROOT       Installation root (default: \$HOME/Games/Run8)
@@ -507,9 +534,6 @@ EOF
         exit 0
         ;;
     "")
-        ;;
-    *)
-        die "Unknown option: $1 (try --help)"
         ;;
 esac
 
@@ -527,8 +551,8 @@ mkdir -p "$WINEPREFIX"
 # Establish the Wine prefix before doing anything else.
 if [[ ! -d "$WINEPREFIX/drive_c" ]]; then
     info "Creating Wine prefix"
-    WINEPREFIX="$WINEPREFIX" wineboot -u 2>&1 | tee -a "$LOG_FILE"
-    status=${PIPESTATUS[0]}
+    run_external_process wineboot -u
+    status=$?
     [[ $status -eq 0 ]] || die "Failed to initialize Wine prefix."
 fi
 

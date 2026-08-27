@@ -14,15 +14,13 @@ An idempotent Bash script to automate the installation of **Run 8 V3** (a train 
 
 ## Prerequisites
 
-- **Linux** 
+- **Linux**
 - **Wine** installed and available in your PATH
 - **Bash** (version 4.0+)
 - Write permissions to the installation directory (default: `$HOME/Games/Run8`)
 - A Windows installation (`.exe`) of Run 8 V3 and any desired DLC installers
 
 ## Quick Start
-
-> **Note**: Replace `yourusername` in the URLs below with the actual GitHub username where this repository is hosted.
 
 Choose one of the following methods to get started:
 
@@ -31,8 +29,8 @@ Choose one of the following methods to get started:
 Download the latest release from [GitHub Releases](../../releases):
 
 ```bash
-# Download and extract (replace yourusername with the actual GitHub username)
-wget https://github.com/yourusername/Run8Installer/releases/download/v1.0.0/run8-installer-v1.0.0.tar.gz
+# Download and extract
+wget https://github.com/wildj79/Run8Installer/releases/download/v1.0.0/run8-installer-v1.0.0.tar.gz
 tar -xzf run8-installer-v1.0.0.tar.gz
 cd Run8Installer
 
@@ -43,7 +41,7 @@ chmod +x install-run8.sh
 ### Option 2: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/Run8Installer.git
+git clone https://github.com/wildj79/Run8Installer.git
 cd Run8Installer
 chmod +x install-run8.sh
 ```
@@ -52,7 +50,7 @@ chmod +x install-run8.sh
 
 ```bash
 # Download just the script
-curl -fsSL https://github.com/yourusername/Run8Installer/releases/download/v1.0.0/install-run8.sh -o install-run8.sh
+curl -fsSL https://github.com/wildj79/Run8Installer/releases/download/v1.0.0/install-run8.sh -o install-run8.sh
 chmod +x install-run8.sh
 ```
 
@@ -60,7 +58,7 @@ chmod +x install-run8.sh
 
 After downloading the script via one of the methods above:
 
-1. Place your Run 8 V3 installer (`run8v3_install.exe`), Run 8 update installer (`r8v3_run8updaterinstaller.exe`), and 
+1. Place your Run 8 V3 installer (`run8v3_install.exe`), Run 8 update installer (`r8v3_run8updaterinstaller.exe`), and
    any DLC installer files in the same directory as `install-run8.sh`
 2. Run the installer:
    ```bash
@@ -113,6 +111,14 @@ Shows what would be installed without making any changes:
 ```
 
 Runs only the Run8_Updater.exe without modifying other components. Useful for updating an existing installation.
+
+### Show Wine Output
+
+```bash
+./install-run8.sh --verbose
+```
+
+By default, Wine output is hidden so stdout and `install.log` contain only messages explicitly written by the script. Use `--verbose` or `-v` to show Wine output and append it to `install.log`.
 
 ### Display Help
 
