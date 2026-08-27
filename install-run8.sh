@@ -93,8 +93,7 @@ EOF
 manifest_contains() {
     local installer="$1"
 
-    # Ignore comments and blank lines.
-    grep -Fqx -- "$installer" "$MANIFEST" 2>/dev/null
+    grep -Fq -- "$installer"$'\t' "$MANIFEST" 2>/dev/null
 }
 
 manifest_add() {
