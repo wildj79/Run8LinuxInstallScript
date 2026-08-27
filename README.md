@@ -22,8 +22,6 @@ An idempotent Bash script to automate the installation of **Run 8 V3** (a train 
 
 ## Quick Start
 
-> **Note**: Replace `yourusername` in the URLs below with the actual GitHub username where this repository is hosted.
-
 Choose one of the following methods to get started:
 
 ### Option 1: Download Latest Release (Recommended)
@@ -31,8 +29,8 @@ Choose one of the following methods to get started:
 Download the latest release from [GitHub Releases](../../releases):
 
 ```bash
-# Download and extract (replace yourusername with the actual GitHub username)
-wget https://github.com/yourusername/Run8Installer/releases/download/v1.0.0/run8-installer-v1.0.0.tar.gz
+# Download and extract
+wget https://github.com/wildj79/Run8Installer/releases/download/v1.0.0/run8-installer-v1.0.0.tar.gz
 tar -xzf run8-installer-v1.0.0.tar.gz
 cd Run8Installer
 
@@ -43,7 +41,7 @@ chmod +x install-run8.sh
 ### Option 2: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/Run8Installer.git
+git clone https://github.com/wildj79/Run8Installer.git
 cd Run8Installer
 chmod +x install-run8.sh
 ```
@@ -52,7 +50,7 @@ chmod +x install-run8.sh
 
 ```bash
 # Download just the script
-curl -fsSL https://github.com/yourusername/Run8Installer/releases/download/v1.0.0/install-run8.sh -o install-run8.sh
+curl -fsSL https://github.com/wildj79/Run8Installer/releases/download/v1.0.0/install-run8.sh -o install-run8.sh
 chmod +x install-run8.sh
 ```
 
